@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}{{ p.title }} narxi — {{ brand.NAME }}{% endblock %}
+{% block description %}{{ p.title }} narxlarini {{ offers|length }} ta do'konda solishtiring.{% endblock %}
+{% block content %}
+<nav class="crumbs"><a href="{{ url_for('index') }}">Bosh sahifa</a> › {% if cat %}<a href="{{ url_for('category', slug=cat.slug) }}">{{ cat.name }}</a> › {% endif %}<a href="{{ url_for('search', brand=p.brand, category=(cat.slug if cat else '')) }}">{{ brand_name(p.brand) }}</a></nav>
+
+<section class="pdp">
+  <div class="pic">
+    {% if p.image %}
+      <img src="{{ p.image }}" alt="{{ p.title }}" referrerpolicy="no-referrer">
+    {% else %}
+      <span class="ph big">{{ p.brand[:1]|upper }}</span>
+    {% endif %}
+  </div>
+  <div class="info">
+    <h1>{{ p.title }}</h1>
+    <div class="specs">
+      {% if p.ram_gb %}<span class="chip static">{{ p.ram_gb }} GB RAM</span>{% endif %}
+      {% if p.storage_gb %}<span class="chip static">{{ "1 TB" if p.storage_gb == 1024 else (p.storage_gb ~ " GB") }} xotira</span>{% endif %}
+    </div>
+    {% if best %}
+      <div class="best">
+        <div class="label">Eng arzon narx</div>
+        <div class="price">{{ best.price|som }}</div>
+        <div class="where">{{ best.store_name }}</div>
+        {% if savings > 0 %}<div class="save">Eng qimmat taklifdan {{ savings|som }} arzon</div>{% endif %}
+        <a class="btn" href="{{ url_for('go', offer_id=best.id) }}" rel="nofollow noopener" target="_blank">Do'konga o'tish</a>
+      </div>
+    {% else %}
+      <p class="empty">Hozir sotuvda yo'q.</p>
+    {% endif %}
+  </div>
+</section>
+
+<h2>Do'konlardagi narxlar</h2>
+<table class="offers">
+  <thead><tr><th>Do'kon</th><th>Narx</th><th></th></tr></thead>
+  <tbody>
+  {% for o in offers %}
+    <tr class="{{ 'best-row' if best and o.id == best.id else '' }}{{ ' oos' if not o.in_stock else '' }}">
+      <td><b>{{ o.store_name }}</b><br><small>{{ o.title }}</small></td>
+      <td class="num">{% if o.in_stock %}{{ o.price|som }}{% else %}<span class="muted">Sotuvda yo'q</span>{% endif %}</td>
+      <td class="act">{% if o.in_stock %}<a href="{{ url_for('go', offer_id=o.id) }}" rel="nofollow noopener" target="_blank">O'tish →</a>{% endif %}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% if chart %}
+<h2>Narx tarixi</h2>
+<div class="chart-box">
+  {{ chart }}
+  <div class="chart-legend"><span>Eng past: <b>{{ price_lo|som }}</b></span><span>Eng yuqori: <b>{{ price_hi|som }}</b></span></div>
+</div>
+{% endif %}
+
+{% if related %}
+<h2>{{ brand_name(p.brand) }} — boshqa tovarlar</h2>
+{% set products = related %}
+{% include "_cards.html" %}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,81 @@
+{
+  "stores": [
+    {
+      "slug": "texnomart",
+      "name": "Texnomart",
+      "url": "https://texnomart.uz",
+      "type": "jsonld",
+      "sections": [
+        {
+          "list_url": "https://texnomart.uz/katalog/smartfony/?page={page}",
+          "max_pages": 10,
+          "category": "smartfonlar"
+        },
+        {
+          "list_url": "https://texnomart.uz/katalog/planshety/?page={page}",
+          "max_pages": 10,
+          "category": "planshetlar"
+        },
+        {
+          "list_url": "https://texnomart.uz/katalog/noutbuki/?page={page}",
+          "max_pages": 10,
+          "category": "noutbuklar"
+        },
+        {
+          "list_url": "https://texnomart.uz/katalog/televizory/?page={page}",
+          "max_pages": 15,
+          "category": "televizorlar"
+        },
+        {
+          "list_url": "https://texnomart.uz/katalog/holodilniki/?page={page}",
+          "max_pages": 15,
+          "category": "muzlatgichlar"
+        },
+        {
+          "list_url": "https://texnomart.uz/katalog/pylesosy/?page={page}",
+          "max_pages": 10,
+          "category": "changyutgichlar"
+        },
+        {
+          "list_url": "https://texnomart.uz/katalog/kondicionery/?page={page}",
+          "max_pages": 10,
+          "category": "konditsionerlar"
+        },
+        {
+          "list_url": "https://texnomart.uz/katalog/obogrevateli/?page={page}",
+          "max_pages": 10,
+          "category": "isitgichlar"
+        },
+        {
+          "list_url": "https://texnomart.uz/katalog/uvlazhniteli-vozduha/?page={page}",
+          "max_pages": 10,
+          "category": "havo-tozalagichlar"
+        },
+        {
+          "list_url": "https://texnomart.uz/katalog/ochistiteli-vozduha/?page={page}",
+          "max_pages": 10,
+          "category": "havo-tozalagichlar"
+        },
+        {
+          "list_url": "https://texnomart.uz/katalog/monitory/?page={page}",
+          "max_pages": 10,
+          "category": "kompyuter-jihozlari"
+        },
+        {
+          "list_url": "https://texnomart.uz/katalog/printery-i-mfu-2/?page={page}",
+          "max_pages": 10,
+          "category": "kompyuter-jihozlari"
+        },
+        {
+          "list_url": "https://texnomart.uz/katalog/malaya-tehnika-2/?page={page}",
+          "max_pages": 25,
+          "fallback_category": "kichik-maishiy-texnika"
+        },
+        {
+          "list_url": "https://texnomart.uz/katalog/krupnaya-tehnika-2/?page={page}",
+          "max_pages": 10
+        }
+      ]
+    }
+  ]
+}

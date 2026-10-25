@@ -1,0 +1,16 @@
+<div class="grid">
+  {% for p in products %}
+  <a class="card" href="{{ url_for('product', product_id=p.id) }}">
+    <div class="thumb">
+      {% if p.image %}
+        <img src="{{ p.image }}" alt="{{ p.title }}" loading="lazy" referrerpolicy="no-referrer">
+      {% else %}
+        <span class="ph">{{ p.brand[:1]|upper }}</span>
+      {% endif %}
+    </div>
+    <h3>{{ p.title }}</h3>
+    <div class="from">dan <b>{{ p.min_price|som }}</b></div>
+    <div class="meta">{{ p.n_offers }} ta do'konda{% if p.max_price > p.min_price %} · farq {{ (p.max_price - p.min_price)|som }}{% endif %}</div>
+  </a>
+  {% endfor %}
+</div>

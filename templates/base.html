@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ brand.NAME }} — {{ brand.TAGLINE }}{% endblock %}</title>
+  <meta name="description" content="{% block description %}Texnika va boshqa tovarlarning eng arzon narxini O'zbekiston do'konlari orasidan toping.{% endblock %}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  {% if is_demo %}
+  <div class="demo-banner">DEMO rejim: do'konlar va narxlar to'qima, haqiqiy bozorni aks ettirmaydi.</div>
+  {% endif %}
+  <header class="top">
+    <div class="wrap top-row">
+      <a class="logo" href="{{ url_for('index') }}">{{ brand.LOGO_MAIN }}<span>{{ brand.LOGO_ACCENT }}</span></a>
+      <form class="search" action="{{ url_for('search') }}" method="get" role="search">
+        <div class="sbox">
+          <input type="search" name="q" id="q" value="{{ q or '' }}" placeholder="Masalan: iPhone 15, Samsung muzlatgich, changyutgich"
+                 aria-label="Qidiruv" autocomplete="off" role="combobox" aria-expanded="false"
+                 aria-controls="suggest" aria-autocomplete="list" data-suggest-url="{{ url_for('suggest') }}">
+          <div id="suggest" class="suggest" role="listbox" hidden></div>
+        </div>
+        <button type="submit">Qidirish</button>
+      </form>
+    </div>
+    {% if nav_categories %}
+    <nav class="cats wrap" aria-label="Kategoriyalar">
+      {% for c in nav_categories %}<a href="{{ url_for('category', slug=c.slug) }}">{{ c.name }}</a>{% endfor %}
+    </nav>
+    {% endif %}
+  </header>
+  <main class="wrap">
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="wrap foot">
+    <b>{{ brand.SLOGAN }}.</b> Narx tushganda xabar olish uchun Telegram botimiz: <a href="{{ brand.BOT_URL }}">@{{ brand.BOT_USERNAME }}</a><br>
+    Narxlar do'konlardan avtomatik olinadi va o'zgarishi mumkin. Xarid qilishdan oldin narxni do'kon saytida tekshiring.
+  </footer>
+  <script src="{{ url_for('static', filename='suggest.js') }}" defer></script>
+</body>
+</html>

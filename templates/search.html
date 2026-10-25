@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}{% if q %}{{ q }} — {% elif cat %}{{ cat.name }} — {% endif %}Qidiruv — {{ brand.NAME }}{% endblock %}
+{% block content %}
+<div class="bar">
+  <h2>{% if q %}«{{ q }}»{% elif cat %}{{ cat.name }}{% elif brand %}{{ brand_name(brand) }}{% else %}Barcha tovarlar{% endif %}
+    <small>{{ total }} ta natija</small></h2>
+  <form method="get" action="{{ url_for('search') }}" class="sort">
+    <input type="hidden" name="q" value="{{ q }}">
+    <input type="hidden" name="brand" value="{{ brand }}">
+    {% if cat %}<input type="hidden" name="category" value="{{ cat.slug }}">{% endif %}
+    <label>Saralash
+      <select name="sort" onchange="this.form.submit()">
+        {% for key, (_sql, label) in sorts.items() %}
+          <option value="{{ key }}" {% if key == sort %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <noscript><button type="submit">OK</button></noscript>
+  </form>
+</div>
+
+{% if brands and (cat or brand) %}
+<div class="chips brands">
+  {% for b in brands %}
+    <a class="chip{% if b.brand == brand %} on{% endif %}" href="{{ url_for('search', q=q, brand=(b.brand if b.brand != brand else ''), category=(cat.slug if cat else ''), sort=sort) }}">{{ brand_name(b.brand) }} <small>{{ b.n }}</small></a>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if products %}
+  {% include "_cards.html" %}
+  {% if pages > 1 %}
+  <nav class="pager">
+    {% if page > 1 %}<a href="{{ url_for('search', q=q, brand=brand, category=(cat.slug if cat else ''), sort=sort, page=page-1) }}">← Oldingi</a>{% endif %}
+    <span>{{ page }} / {{ pages }}</span>
+    {% if page < pages %}<a href="{{ url_for('search', q=q, brand=brand, category=(cat.slug if cat else ''), sort=sort, page=page+1) }}">Keyingi →</a>{% endif %}
+  </nav>
+  {% endif %}
+{% else %}
+  <p class="empty">Hech narsa topilmadi. Boshqa nom bilan urinib ko'ring.</p>
+{% endif %}
+{% endblock %}

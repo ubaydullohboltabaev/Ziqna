@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <h1>Eng arzon narxni toping</h1>
+  <p>Bir nechta do'kondagi narxlarni bir joyda solishtiring.</p>
+  <div class="chips">
+    {% for c in nav_categories %}
+      <a class="chip" href="{{ url_for('category', slug=c.slug) }}">{{ c.name }} <small>{{ c.n }}</small></a>
+    {% endfor %}
+  </div>
+</section>
+
+<h2>Ko'p do'konda sotilayotgan tovarlar</h2>
+{% if products %}
+  {% include "_cards.html" %}
+{% else %}
+  <p class="empty">Hozircha tovarlar yo'q. <code>python seed_demo.py</code> yoki <code>python run_scrape.py</code> ni ishga tushiring.</p>
+{% endif %}
+{% endblock %}

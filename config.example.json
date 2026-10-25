@@ -1,0 +1,25 @@
+{
+  "stores": [
+    {
+      "slug": "magazin-a",
+      "name": "Magazin A",
+      "url": "https://example-store-a.uz",
+      "type": "feed",
+      "feed_url": "https://example-store-a.uz/feeds/smartphones.yml"
+    },
+    {
+      "slug": "magazin-b",
+      "name": "Magazin B",
+      "url": "https://example-store-b.uz",
+      "type": "html",
+      "list_url": "https://example-store-b.uz/smartfonlar?page={page}",
+      "selectors": {
+        "item": ".product-card",
+        "title": ".product-title",
+        "price": ".product-price",
+        "link": "a",
+        "image": "img"
+      }
+    }
+  ]
+}
