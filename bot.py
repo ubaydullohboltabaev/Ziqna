@@ -23,7 +23,7 @@ SITE_URL = os.environ.get("NARXTOP_URL", "").rstrip("/")   # ommaviy sayt manzil
 
 WELCOME = (
     f"Salom! Men {brand.NAME} botiman. {brand.SLOGAN}!\n\n"
-    "Tovar nomini yozing, masalan: <b>iPhone 15</b>, <b>Samsung muzlatgich</b> yoki <b>changyutgich</b>. "
+    "Tovar nomini yozing, masalan: <b>iPhone</b>, <b>Redmi Note</b>, <b>Samsung muzlatgich</b> yoki <b>changyutgich</b>. "
     "Men do'konlardagi eng arzon narxni topaman, xohlasangiz narx tushganda xabar beraman.\n\n"
     "/obunalar: kuzatayotgan tovarlaringiz"
 )
@@ -71,12 +71,18 @@ class Bot:
     # ---------- ko'rinishlar ----------
     def show_results(self, chat_id, query):
         rows = bot_core.search_products(self.conn, query)
+        header = f"«{e(query)}» bo'yicha natijalar. Tovarni tanlang:"
         if not rows:
-            self.send(chat_id, "Hech narsa topilmadi. Boshqa nom bilan urinib ko'ring, masalan: <b>Redmi Note 13</b>.")
-            return
+            rows, used = bot_core.search_similar(self.conn, query)
+            if not rows:
+                self.send(chat_id, "Hech narsa topilmadi. Boshqa nom bilan urinib ko'ring, masalan: "
+                                   "<b>iPhone</b>, <b>Redmi Note</b> yoki <b>televizor</b>.")
+                return
+            header = (f"«{e(query)}» hozir do'konlarda yo'q. "
+                      f"«{e(used)}» bo'yicha o'xshash tovarlar:")
         kb = [[{"text": f"{r['title']} · dan {pricing.fmt_som(r['min_price'])}", "callback_data": f"p:{r['id']}"}]
               for r in rows]
-        self.send(chat_id, f"«{e(query)}» bo'yicha natijalar. Tovarni tanlang:", kb)
+        self.send(chat_id, header, kb)
 
     def show_product(self, chat_id, product_id):
         p, offers = bot_core.get_product(self.conn, product_id)

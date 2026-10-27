@@ -27,6 +27,18 @@ def search_products(conn, text, limit=6):
     ).fetchall()
 
 
+def search_similar(conn, text, limit=6):
+    """Aniq natija bo'lmasa: oxirgi so'zlarni birma-bir tashlab qidiramiz ("iphone 15" -> "iphone").
+    (natijalar, ishlatilgan so'rov) qaytaradi."""
+    tokens = catalog.norm(text).split()[:6]
+    while len(tokens) > 1:
+        tokens = tokens[:-1]
+        rows = search_products(conn, " ".join(tokens), limit)
+        if rows:
+            return rows, " ".join(tokens)
+    return [], ""
+
+
 def get_product(conn, product_id):
     p = conn.execute("SELECT id, title FROM products WHERE id = ?", (product_id,)).fetchone()
     if p is None:

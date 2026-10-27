@@ -186,3 +186,15 @@ def test_subscriptions_list(env):
     bot_core.subscribe(conn, 1, pid(conn, "%A55%"))
     bot.handle_update(msg("/obunalar"))
     assert "1 ta" in api.sent()[-1]["text"]
+
+
+def test_similar_results_when_exact_model_missing(tmp_path):
+    import bot_core
+    import db as dbm
+    import seed_demo
+    conn = dbm.connect(str(tmp_path / "s.db"))
+    seed_demo.seed(conn, reset=True)
+    assert bot_core.search_products(conn, "iphone 99") == []
+    rows, used = bot_core.search_similar(conn, "iphone 99")
+    assert rows and used == "iphone"
+    assert bot_core.search_similar(conn, "qwerty zzz") == ([], "")
