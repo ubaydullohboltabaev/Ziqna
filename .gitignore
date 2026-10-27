@@ -2,3 +2,4 @@ __pycache__/
 .pytest_cache/
 *.db
 bot_token.txt
+bot_token.txt.txt

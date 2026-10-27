@@ -193,9 +193,13 @@ class Bot:
 def read_token():
     token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
     if not token:
-        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "bot_token.txt")
-        if os.path.exists(path):
-            token = open(path, encoding="utf-8").read().strip()
+        here = os.path.dirname(os.path.abspath(__file__))
+        # Windows kengaytmani yashirgani uchun fayl ko'pincha "bot_token.txt.txt" bo'lib qoladi
+        for name in ("bot_token.txt", "bot_token.txt.txt"):
+            path = os.path.join(here, name)
+            if os.path.exists(path):
+                token = open(path, encoding="utf-8-sig").read().strip()   # -sig: Notepad BOM'ini olib tashlaydi
+                break
     return token
 
 
